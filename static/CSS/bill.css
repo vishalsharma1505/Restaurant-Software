@@ -1,0 +1,98 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 20px;
+}
+
+.invoice-box {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+/* ---------- Header ---------- */
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+.invoice-header .logo img {
+    height: 80px;
+}
+.invoice-header .restaurant-details {
+    text-align: right;
+}
+.restaurant-details h2 {
+    margin: 0;
+    font-size: 26px;
+    color: #2c3e50;
+}
+.restaurant-details p {
+    margin: 3px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+/* ---------- Bill Info ---------- */
+.bill-info {
+    margin-bottom: 20px;
+}
+.bill-info h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+.bill-info p {
+    margin: 4px 0;
+    font-size: 15px;
+}
+
+/* ---------- Table ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+table th, table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+table th {
+    background: #2c3e50;
+    color: #fff;
+    text-align: left;
+}
+table td:last-child, 
+table th:last-child {
+    text-align: right;
+}
+
+/* ---------- Total ---------- */
+.invoice-total {
+    text-align: right;
+    font-size: 18px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+.invoice-total span {
+    color: #27ae60;
+    font-size: 20px;
+}
+
+/* ---------- Footer ---------- */
+.invoice-footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    border-top: 2px solid #eee;
+    padding-top: 15px;
+}
