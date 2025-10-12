@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Place an Order</h4>
+      </div>
+      <div class="card-body">
+        <form method="post" action="/add-to-cart">
+          <div class="mb-3">
+            <label class="form-label">Item</label>
+            <select class="form-select" name="item" required>
+              <option value="">Select Item</option>
+              <option value="Pizza">Pizza</option>
+              <option value="Burger">Burger</option>
+              <option value="Pasta">Pasta</option>
+              <option value="Cold Drink">Cold Drink</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" class="form-control" name="quantity" min="1" value="1" required>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Add to Cart</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

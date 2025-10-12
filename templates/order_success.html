@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Thank you! Your order for Table {{ table.name }} has been placed.</h3>
+<a href="{{ url_for('customer_order', table_id=table.id) }}" class="btn btn-secondary">Place Another Order</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Table {{ table.name }}{% endblock %}
+{% block content %}
+<h2>Menu - Table {{ table.name }}</h2>
+<ul>
+{% for p in products %}
+    <li>{{ p.name }} - ₹{{ "%.2f"|format(p.price) }} 
+    <button onclick="orderProduct({{ table.id }}, {{ p.id }})">Order</button></li>
+{% endfor %}
+</ul>
+{% endblock %}

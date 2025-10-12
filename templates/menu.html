@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+
+  <!-- Table Info -->
+  <div class="mb-4 text-center">
+    <h3>Welcome to {{ table.name }}</h3>
+    <p class="text-muted">Please select items from the menu below</p>
+  </div>
+
+  <!-- Categories -->
+  {% for category in categories %}
+  <div class="mb-5">
+    <h4 class="mb-3 border-bottom pb-2">{{ category.name }}</h4>
+
+    <div class="row">
+      {% for product in products if product.category_id == category.id %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="row g-0 align-items-center">
+            
+            <!-- Image -->
+            <div class="col-4 text-center p-2">
+              {% if product.image %}
+              <img src="{{ url_for('static', filename='images/' ~ product.image) }}"
+                   alt="{{ product.name }}"
+                   class="img-fluid rounded"
+                   style="max-height: 90px; object-fit: cover;">
+              {% else %}
+              <img src="{{ url_for('static', filename='images/no-image.png') }}"
+                   alt="No Image"
+                   class="img-fluid rounded"
+                   style="max-height: 90px; object-fit: cover;">
+              {% endif %}
+            </div>
+
+            <!-- Info + Qty -->
+            <div class="col-8">
+              <div class="card-body p-2">
+                <h6 class="card-title mb-1">{{ product.name }}</h6>
+                <p class="text-muted small mb-2">₹{{ product.price }}</p>
+
+                <!-- Quantity Controls -->
+                <form method="POST" class="d-flex align-items-center">
+                  <input type="hidden" name="product_id" value="{{ product.id }}">
+                  
+                  <button type="submit" name="action" value="decrease"
+                          class="btn btn-sm btn-outline-secondary">−</button>
+                  
+                  <span class="mx-2">
+                    {{ cart.get(product.id|string, 0) }}
+                  </span>
+                  
+                  <button type="submit" name="action" value="increase"
+                          class="btn btn-sm btn-outline-secondary">+</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- Go to Cart Button -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('cart', table_id=table.id) }}"
+       class="btn btn-lg btn-success px-5">
+      Go to Cart
+    </a>
+  </div>
+
+  <!-- Already existing menu/cart display code yaha hoga -->
+
+<!-- ✅ Button for My Orders -->
+<div class="mt-4 text-center">
+  <a href="{{ url_for('my_orders', table_id=table.id) }}" class="btn btn-warning">
+    📦 View My Orders
+  </a>
+</div>
+
+
+</div>
+{% endblock %}

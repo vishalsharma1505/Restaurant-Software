@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <!-- Bill ko include karo -->
+  {% include "bill.html" %}
+
+  <!-- Ye button sirf web view ke liye -->
+  <div class="mt-3 text-center">
+    <a href="{{ url_for('download_bill', order_id=order.id) }}" class="btn btn-primary">
+      ⬇️ Download Bill
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+
+  <h3 class="mb-4">🛒 Cart - Table {{ table.name }}</h3>
+
+  {% if cart_items %}
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle text-center">
+      <thead class="table-light">
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart_items %}
+        <tr>
+          <!-- Product Image -->
+          <td style="width: 80px;">
+            {% if item.product.image %}
+            <img src="{{ url_for('static', filename='images/' ~ item.product.image) }}"
+                 alt="{{ item.product.name }}"
+                 class="img-fluid rounded"
+                 style="max-height:60px; object-fit:cover;">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/no-image.png') }}"
+                 alt="No Image"
+                 class="img-fluid rounded"
+                 style="max-height:60px; object-fit:cover;">
+            {% endif %}
+          </td>
+
+          <!-- Product Name -->
+          <td>{{ item.product.name }}</td>
+
+          <!-- Quantity -->
+          <td>
+            <form method="POST" class="d-flex justify-content-center align-items-center">
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+              <button name="action" value="decrease" class="btn btn-sm btn-outline-secondary me-2">−</button>
+              <span class="px-2">{{ item.qty }}</span>
+              <button name="action" value="increase" class="btn btn-sm btn-outline-secondary ms-2">+</button>
+            </form>
+          </td>
+
+          <!-- Subtotal -->
+          <td>₹{{ item.subtotal }}</td>
+
+          <!-- Remove -->
+          <td>
+            <form method="POST" class="d-inline">
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+              <button name="action" value="remove" class="btn btn-sm btn-danger">Remove</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Total -->
+  <div class="text-end my-3">
+    <h4>Total: ₹{{ total_price }}</h4>
+  </div>
+
+  <!-- Place Order -->
+  <div class="text-center">
+    <form method="POST">
+      <button name="action" value="place_order" class="btn btn-lg btn-success px-5">
+        ✅ Place Order
+      </button>
+    </form>
+  </div>
+
+  {% else %}
+  <!-- Empty Cart -->
+  <div class="alert alert-info text-center">
+    Your cart is empty.
+  </div>
+  <div class="text-center">
+    <a href="{{ url_for('menu', table_id=table.id) }}" class="btn btn-primary">
+      ← Back to Menu
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

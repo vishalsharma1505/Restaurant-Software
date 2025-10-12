@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Edit Product</h3>
+<form method="POST">
+    <div class="mb-3">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" value="{{ product.name }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Price</label>
+        <input type="number" step="0.01" name="price" class="form-control" value="{{ product.price }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Category</label>
+        <select name="category" class="form-control" required>
+            {% for c in categories %}
+            <option value="{{ c.id }}" {% if c.id == product.category_id %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label>Image</label>
+        <input type="text" name="image" class="form-control" value="{{ product.image }}">
+    </div>
+    <button class="btn btn-primary">Update</button>
+</form>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-4">📦 My Orders</h3>
+{% if orders %}
+  <table class="table table-striped shadow-sm rounded">
+    <thead class="table-dark">
+      <tr>
+        <th>Order ID</th>
+        <th>Items</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for o in orders %}
+      <tr>
+        <td>#{{ o.id }}</td>
+        <td>
+          <ul class="mb-0">
+            {% for item in o.order_items %}
+              <li>{{ item.product.name }} × {{ item.qty }} (₹{{ "%.2f"|format(item.price) }})</li>
+            {% endfor %}
+          </ul>
+        </td>
+        <td><strong>₹{{ "%.2f"|format(o.order_items|map(attribute='price')|sum) }}</strong></td>
+        <td><span class="badge bg-info">{{ o.status }}</span></td>
+        <td>{{ o.created_at.strftime('%d-%m-%Y %I:%M %p') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- ✅ Stylish Add More Items Button -->
+  <div class="mt-5 text-center">
+    <a href="{{ url_for('menu', table_id=table.id) }}" 
+       class="btn btn-lg btn-success shadow px-4 py-2" 
+       style="border-radius: 50px; font-size: 1.1rem;">
+      <i class="bi bi-plus-circle me-2"></i> Add More Items
+    </a>
+  </div>
+{% else %}
+  <p class="text-muted">No orders found.</p>
+  <a href="{{ url_for('menu', table_id=table.id) }}" 
+     class="btn btn-lg btn-primary shadow mt-3">
+    🍴 Start Ordering
+  </a>
+{% endif %}
+{% endblock %}

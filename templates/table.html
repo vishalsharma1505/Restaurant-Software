@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ table.name }}</h2>
+<p><a href="{{ url_for('cart_view', table_id=table.id) }}">View Cart</a></p>
+{% for cat in categories %}
+  <h3>{{ cat.name }}</h3>
+  <ul>
+    {% for p in products if p.category_id == cat.id %}
+      <li>
+        <img src="{{ url_for('static', filename='uploads/' + (p.photo or 'noimg.png')) }}" width="70">
+        <strong>{{ p.name }}</strong> - ₹{{'%.2f'|format(p.price) }}
+        <button onclick="addToCart({{p.id}})">Add</button>
+        <button onclick="removeFromCart({{p.id}})">Remove</button>
+      </li>
+    {% endfor %}
+  </ul>
+{% endfor %}
+<script>
+const table_id = {{ table.id }};
+function getCart(){ return JSON.parse(localStorage.getItem('cart_'+table_id) || '{}'); }
+function saveCart(c){ localStorage.setItem('cart_'+table_id, JSON.stringify(c)); }
+function addToCart(pid){ let c=getCart(); c[pid]= (c[pid]||0)+1; saveCart(c); alert('Added'); }
+function removeFromCart(pid){ let c=getCart(); if(c[pid]){ c[pid]-=1; if(c[pid]<=0) delete c[pid]; saveCart(c);} alert('Removed'); }
+</script>
+{% endblock %}

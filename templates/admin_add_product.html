@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h3>Add Product</h3>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label>Name</label>
+      <input type="text" class="form-control" name="name" required>
+    </div>
+    <div class="mb-3">
+      <label>Price</label>
+      <input type="number" class="form-control" name="price" step="0.01" required>
+    </div>
+    <div class="mb-3">
+      <label>Category</label>
+      <select name="category_id" class="form-control" required>
+        {% for cat in categories %}
+        <option value="{{ cat.id }}">{{ cat.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label>Image</label>
+      <input type="file" name="image" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-success">Add</button>
+    <a href="{{ url_for('admin_products') }}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

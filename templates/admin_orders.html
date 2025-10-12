@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h3>Orders</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Table</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr id="order-{{ order.id }}">
+        <td>{{ order.id }}</td>
+        <td>{{ order.table.name if order.table else '' }}</td>
+        <td>
+          <select class="form-control status-dropdown" data-id="{{ order.id }}">
+            <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="preparing" {% if order.status == 'preparing' %}selected{% endif %}>Preparing</option>
+            <option value="served" {% if order.status == 'served' %}selected{% endif %}>Served</option>
+            <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>Completed</option>
+          </select>
+        </td>
+        <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>
+          <!-- View Bill -->
+          <a href="{{ url_for('view_bill', order_id=order.id) }}" class="btn btn-sm btn-info">View Bill</a>
+          <!-- Download Bill -->
+          <a href="{{ url_for('download_bill', order_id=order.id) }}" class="btn btn-success">
+  ⬇️ Download Bill
+</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+  const socket = io();
+
+  document.querySelectorAll(".status-dropdown").forEach(select => {
+    select.addEventListener("change", function() {
+      const orderId = this.dataset.id;
+      const newStatus = this.value;
+      socket.emit("update_order_status", { order_id: orderId, status: newStatus });
+    });
+  });
+
+  socket.on("order_status_updated", function(data) {
+    const row = document.querySelector(`#order-${data.order_id} .status-dropdown`);
+    if (row) {
+      row.value = data.status;
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill PDF</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="invoice-box">
+        <div class="invoice-header">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Restaurant Logo">
+            </div>
+            <div class="restaurant-details">
+                <h2>Restaurant Bill</h2>
+                <p><b>Order ID:</b> #{{ order.id }}</p>
+                <p><b>Table:</b> {{ order.table.name }}</p>
+                <p><b>Date:</b> {{ order.created_at.strftime('%d-%m-%Y %I:%M %p') }}</p>
+            </div>
+        </div>
+
+        <div class="bill-info">
+            <h3>Order Summary</h3>
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price (₹)</th>
+                        <th>Total (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td>{{ "%.2f"|format(item.price / item.qty) }}</td>
+                        <td>{{ "%.2f"|format(item.price) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="invoice-total">
+                Grand Total: <span>₹{{ "%.2f"|format(total_price) }}</span>
+            </div>
+        </div>
+
+        <div class="invoice-footer">
+            <p>Thank you for dining with us!</p>
+            <p>Powered by <b>INetwork Hub</b></p>
+        </div>
+    </div>
+</body>
+</html>

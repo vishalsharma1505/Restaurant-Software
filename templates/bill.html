@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Restaurant Bill</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="invoice-box">
+    <div class="invoice-header">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+      </div>
+      <div class="restaurant-details">
+        <h2>INH Restaurant</h2>
+        <p>123 Main Street, Kolkata</p>
+        <p>Phone: +91-9065860876</p>
+        <p>Date: {{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+      </div>
+    </div>
+
+    <div class="bill-info">
+      <h3>Invoice</h3>
+      <p><b>Order ID:</b> #{{ order.id }}</p>
+      <p><b>Table:</b> {{ order.table.name if order.table else '' }}</p>
+    </div>
+
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order_items %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.qty }}</td>
+          <td>{{ "%.2f"|format(item.price) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p class="invoice-total">Total Amount: <span>₹{{ "%.2f"|format(total_price) }}</span></p>
+
+    <div class="invoice-footer">
+      <p>🙏 Thank you for dining with us! 🙏</p>
+      <p>We hope to see you again soon.</p>
+      <p>&copy; {{ order.created_at.year }} My Restaurant. Powered by INetwork Hub.</p>
+    </div>
+  </div>
+</body>
+</html>

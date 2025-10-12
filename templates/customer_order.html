@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3 class="mb-4">Order for Table {{ table.name }}</h3>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        {% for category in categories %}
+            <h5 class="mt-3">{{ category.name }}</h5>
+            <div class="row mb-3">
+                {% for product in products %}
+                    {% if product.category_id == category.id %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card p-2">
+                                {% if product.image %}
+                                    <img src="{{ url_for('static', filename='images/' + product.image) }}" class="img-fluid mb-2">
+                                {% endif %}
+                                <strong>{{ product.name }}</strong><br>
+                                Price: ₹{{ product.price }}<br>
+                                Qty: <input type="number" name="qty" min="0" value="0" class="form-control mb-2">
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+
+    {% if order and order.order_items %}
+        <hr>
+        <h4 class="mt-4">Your Current Order</h4>
+        <table class="table table-bordered mt-2">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% for item in order.order_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td>₹{{ item.price / item.qty }}</td>
+                        <td>₹{{ item.price }}</td>
+                    </tr>
+                    {% set total = total + item.price %}
+                {% endfor %}
+                <tr>
+                    <th colspan="3" class="text-end">Total</th>
+                    <th>₹{{ total }}</th>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

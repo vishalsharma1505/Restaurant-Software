@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-4">📊 Admin Dashboard</h3>
+<div class="card shadow">
+  <div class="card-body">
+    {% if orders %}
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for o in orders %}
+          <tr>
+            <td>{{ o['id'] }}</td>
+            <td>{{ o['items'] }}</td>
+            <td>₹{{ o['total'] }}</td>
+            <td><span class="badge bg-warning">{{ o['status'] }}</span></td>
+            <td>
+              <form method="post" action="/update-status/{{ o['id'] }}">
+                <select name="status" class="form-select form-select-sm d-inline w-auto">
+                  <option>Pending</option>
+                  <option>Processing</option>
+                  <option>Completed</option>
+                </select>
+                <button class="btn btn-sm btn-success">Update</button>
+              </form>
+              <a href="/generate-bill/{{ o['id'] }}" class="btn btn-sm btn-primary mt-2">Generate Bill</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-center text-muted">No orders available.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

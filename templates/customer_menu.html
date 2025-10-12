@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu - Table {{ table.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+</head>
+<body>
+    <h2>Welcome! Table {{ table.name }}</h2>
+    <h3>Our Menu</h3>
+
+    {% for category in categories %}
+        <h4>{{ category.name }}</h4>
+        <ul>
+        {% for product in products if product.category_id == category.id %}
+            <li>
+                {{ product.name }} - ₹{{ "%.2f"|format(product.price) }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
